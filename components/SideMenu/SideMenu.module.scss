@@ -1,4 +1,10 @@
 
 .side_menu_wrap {
-    background: #666666
+    background: #666666;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 250px;
+    padding-top: 50px;
 }

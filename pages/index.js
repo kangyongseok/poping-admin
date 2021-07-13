@@ -1,8 +1,9 @@
 
 
+
 export default function Home() {
   return (
-    <div>
+    <div className="contents_wrap">
       123
     </div>
   )
