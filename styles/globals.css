@@ -14,7 +14,12 @@ ul {
   list-style: none;
 }
 
+a {
+  display: block;
+  text-decoration: none;
+}
+
 .contents_wrap {
-  padding-top: 50px;
+  padding-top: 80px;
   padding-left: 250px;
 }

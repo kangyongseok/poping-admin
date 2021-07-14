@@ -5,6 +5,19 @@
     top: 0;
     left: 0;
     height: 100%;
-    width: 250px;
+    width: 200px;
     padding-top: 50px;
+
+    ul {
+        display: flex;
+        flex-direction: column;
+        .on {
+            background: blue;
+        }
+    }
+    a {
+        color: white;
+        padding: 20px 0;
+        text-align: center;
+    }
 }
