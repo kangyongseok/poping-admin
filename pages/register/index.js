@@ -10,7 +10,8 @@ import axios from 'axios';
 export default function Register() {
     const [fileUrl, setFileUrl] = useState(null);
     const [stockName, setStockName] = useState(null);
-    const [stockPrice, setStockPcie] = useState(null);
+    const [stockPrice, setStockPrice] = useState(null);
+    const [stockCount, setStockCount] = useState(null);
     const [imgLoading, setImgLoading] = useState(null);
 
     const handleImageUpload = async (e) => {
@@ -32,11 +33,20 @@ export default function Register() {
         const response = await axios.post('http://localhost:4000/api/stock/register', {
             stockName,
             stockPrice,
+            stockCount,
         })
-        console.log(response)
+
         if (response.status === 200) {
-            console.log(responseData)
+            init()
+            alert('상품 등록이 완료되었습니다.')
         }
+    }
+
+    const init = () => {
+        setStockName(null)
+        setStockPrice(null)
+        setStockCount(null)
+        setFileUrl(null)
     }
     
     return (
@@ -45,17 +55,24 @@ export default function Register() {
             <form className={styles.register_form} onSubmit={submit} >
                 <TextField
                     required
-                    id="standard-required"
+                    id="stock-name"
                     label="상품명"
                     variant="outlined"
                     onChange={(e) => setStockName(e.target.value)}
                 />
                 <TextField
                     required
-                    id="standard-required"
+                    id="stock-price"
                     label="상품가격"
                     variant="outlined"
-                    onChange={(e) => setStockPcie(e.target.value)}
+                    onChange={(e) => setStockPrice(e.target.value)}
+                />
+                <TextField
+                    required
+                    id="stock-count"
+                    label="상품수량"
+                    variant="outlined"
+                    onChange={(e) => setStockCount(e.target.value)}
                 />
                 <div>
                     <label htmlFor="img_upload">이미지 업로드</label>
@@ -67,9 +84,13 @@ export default function Register() {
                         className={styles.file_upload_input}
                         onChange={handleImageUpload}
                     />
-                    <div className={styles.thumbnail}>
-                        {fileUrl && <img src={fileUrl} alt="img_thumbnail" />}
-                    </div>
+                    {
+                        fileUrl && (
+                            <div className={styles.thumbnail}>
+                                <img src={fileUrl} alt="img_thumbnail" />
+                            </div>
+                        )
+                    }
                 </div>
                 <Button variant="contained" color="primary" onClick={submit} >
                     상품 등록
