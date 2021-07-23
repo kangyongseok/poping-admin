@@ -12,7 +12,7 @@ export default function Register() {
     const [stockName, setStockName] = useState(null);
     const [stockPrice, setStockPrice] = useState(null);
     const [stockCount, setStockCount] = useState(null);
-    const [imgLoading, setImgLoading] = useState(null);
+    const [stockImage, setImage] = useState(null);
 
     const handleImageUpload = async (e) => {
         const imgFile = e.target.files[0];
@@ -21,10 +21,11 @@ export default function Register() {
         const options = { 
             maxSizeMB: 1,          // (default: Number.POSITIVE_INFINITY)
             maxWidthOrHeight: 500,   // compressedFile will scale down by ratio to a point that width or height is smaller than maxWidthOrHeight (default: undefined)
-            onProgress: (percent) => setImgLoading(percent),       // optional, a function takes one progress argument (percentage from 0 to 100) 
+            onProgress: (percent) => console.log(percent),       // optional, a function takes one progress argument (percentage from 0 to 100) 
             useWebWorker: true
         }
         const compressedFile = await imageCompression(imgFile, options)
+        setImage(compressedFile)
         console.log(compressedFile)
     }
 
@@ -34,6 +35,7 @@ export default function Register() {
             stockName,
             stockPrice,
             stockCount,
+            stockImage
         })
 
         if (response.status === 200) {
@@ -48,6 +50,11 @@ export default function Register() {
         setStockCount(null)
         setFileUrl(null)
     }
+
+    const search = async () => {
+        const response = await axios.get("http://localhost:4000/api/stock") 
+        console.log(response)
+    }
     
     return (
         <Contents>
@@ -58,6 +65,7 @@ export default function Register() {
                     id="stock-name"
                     label="상품명"
                     variant="outlined"
+                    value={stockName}
                     onChange={(e) => setStockName(e.target.value)}
                 />
                 <TextField
@@ -65,6 +73,7 @@ export default function Register() {
                     id="stock-price"
                     label="상품가격"
                     variant="outlined"
+                    value={stockPrice}
                     onChange={(e) => setStockPrice(e.target.value)}
                 />
                 <TextField
@@ -72,6 +81,7 @@ export default function Register() {
                     id="stock-count"
                     label="상품수량"
                     variant="outlined"
+                    value={stockCount}
                     onChange={(e) => setStockCount(e.target.value)}
                 />
                 <div>
@@ -96,6 +106,11 @@ export default function Register() {
                     상품 등록
                 </Button>
             </form>
+
+
+            <Button variant="contained" color="primary" onClick={search} >
+                상품 조회
+            </Button>
         </Contents>
     )
 }
