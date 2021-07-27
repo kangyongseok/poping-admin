@@ -14,6 +14,19 @@ export default function Register() {
     const [stockCount, setStockCount] = useState(null);
     const [stockImage, setImage] = useState(null);
 
+    const encodeBase64ImageFile = (image) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader()
+            reader.readAsDataURL(image)
+            reader.onload = (event) => {
+              resolve(event.target.result)
+            }
+            reader.onerror = (error) => {
+              reject(error)
+            }
+          })
+    }
+
     const handleImageUpload = async (e) => {
         const imgFile = e.target.files[0];
         const imgUrl = URL.createObjectURL(imgFile);
@@ -24,9 +37,13 @@ export default function Register() {
             onProgress: (percent) => console.log(percent),       // optional, a function takes one progress argument (percentage from 0 to 100) 
             useWebWorker: true
         }
+    
         const compressedFile = await imageCompression(imgFile, options)
+        const reader = new FileReader();
         setImage(compressedFile)
-        console.log(compressedFile)
+        const encode = await encodeBase64ImageFile(compressedFile)
+        const split = encode.split(',');
+        console.log(split[split.length - 1], compressedFile.name)
     }
 
     const submit = async (e) => {
@@ -61,27 +78,27 @@ export default function Register() {
             <h1>상품등록</h1>
             <form className={styles.register_form} onSubmit={submit} >
                 <TextField
-                    required
-                    id="stock-name"
-                    label="상품명"
+                    placeholder="상품명"
+                    id="outlined-basic" 
+                    label="상품명" 
                     variant="outlined"
-                    value={stockName}
+                    type="text"
                     onChange={(e) => setStockName(e.target.value)}
                 />
                 <TextField
-                    required
-                    id="stock-price"
-                    label="상품가격"
+                    placeholder="상품가격"
+                    id="outlined-basic" 
+                    label="상품가격" 
                     variant="outlined"
-                    value={stockPrice}
+                    type="number"
                     onChange={(e) => setStockPrice(e.target.value)}
                 />
                 <TextField
-                    required
-                    id="stock-count"
-                    label="상품수량"
+                    placeholder="상품갯수"
+                    id="outlined-basic" 
+                    label="상품갯수" 
                     variant="outlined"
-                    value={stockCount}
+                    type="number"
                     onChange={(e) => setStockCount(e.target.value)}
                 />
                 <div>
