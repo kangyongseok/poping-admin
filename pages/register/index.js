@@ -13,6 +13,7 @@ export default function Register() {
     const [stockPrice, setStockPrice] = useState(null);
     const [stockCount, setStockCount] = useState(null);
     const [stockImage, setImage] = useState(null);
+    const [stockImageName, setImageName] = useState(null);
 
     const encodeBase64ImageFile = (image) => {
         return new Promise((resolve, reject) => {
@@ -40,9 +41,10 @@ export default function Register() {
     
         const compressedFile = await imageCompression(imgFile, options)
         const reader = new FileReader();
-        setImage(compressedFile)
         const encode = await encodeBase64ImageFile(compressedFile)
         const split = encode.split(',');
+        setImage(split[split.length - 1])
+        setImageName(compressedFile.name)
         console.log(split[split.length - 1], compressedFile.name)
     }
 
@@ -52,7 +54,8 @@ export default function Register() {
             stockName,
             stockPrice,
             stockCount,
-            stockImage
+            stockImage,
+            stockImageName,
         })
 
         if (response.status === 200) {
